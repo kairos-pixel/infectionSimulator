@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Infection Simulator</title>
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
+        <!-- My Styles -->
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div id="container">
+            <h1 class="mainHeading">Infection Simulator</h1>
+
+            <div id="game">
+                <!-- Cells will get created here. -->
+            </div>
+
+            <!-- Settings -->
+            <form id="settings" action="index.html" method="post">
+                <!-- Infection Rate -->
+                <div class="options">
+                    <label for="infectionRate">Infection Rate</label>
+                    <input id="infectionRate" type="number" name="infectionRate" value="" placeholder="0-100%" min="1" max="100">
+                </div>
+                <!-- Immunity Options -->
+                <div class="options">
+                    <label for="maxImmunity">Maximum Immunity</label>
+                    <select id="maxImmunity" name="maxImmunity">
+                        <option value="hardest">10%</option>
+                        <option value="hard">20%</option>
+                        <option value="normal">30%</option>
+                        <option value="easy">40%</option>
+                    </select>
+                </div>
+                <!-- Tick Rate -->
+                <div class="options">
+                    <label for="tickRate">Tick Rate (ms)</label>
+                    <input id="tickRate" type="number" name="tickRate" value="3000">
+                </div>
+                <!-- Submit -->
+                <div class="start">
+                    <input type="submit" name="" value="Start">
+                </div>
+
+            </form>
+
+        </div>
+        <script type="text/javascript" src="js/code.js"></script>
+    </body>
+</html>
