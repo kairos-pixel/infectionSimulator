@@ -36,7 +36,7 @@ function infectedStatus() {
     var infectedCount = 0;
     for(i=0;i<gridSize;i++){
         if (people[i].infected){
-            infectedCount++; // Counting how many are infected.
+            infectedCount++;
         }
     }
     if (infectedCount == gridSize) {
@@ -51,7 +51,7 @@ function randomPercentage() {
 }
 
 function tickLoop(){
-    setTimeout(function() { // I'm thinking this is the issue.. the people array isn't getting parsed.
+    setTimeout(function() {
         tickEnder = infectedStatus(); // Checks if all 100 are infected, if true the loop will end at the bottom.
         for (i=0;i<gridSize;i++) {
             if (people[i].infected) {
@@ -59,26 +59,26 @@ function tickLoop(){
                 var y = people[i].yCoord;
                 if (x-1 > 0 && people[i-1]) {
                     if (randomPercentage() <= people[i-1].infectionChance) {
-                        document.getElementById((x-1) + "," + y).className = "cells infected";
+                        document.getElementById((x-1) + "," + y).className = (cellSize + " infected");
                         people[i-1].infected = true;
                     }
                 }
-                if (x+1 <= 10 && people[i+1]) {
+                if (x+1 <= maxCols && people[i+1]) {
                     if (randomPercentage() <= people[i+1].infectionChance) {
-                        document.getElementById((x+1) + "," + y).className = "cells infected";
+                        document.getElementById((x+1) + "," + y).className = (cellSize + " infected");
                         people[i+1].infected = true;
                     }
                 }
-                if (y-1 > 0 && people[i-10]) {
-                    if (randomPercentage() <= people[i-10].infectionChance) {
-                        document.getElementById(x + "," + (y-1)).className = "cells infected";
-                        people[i-10].infected = true;
+                if (y-1 > 0 && people[i-maxCols]) {
+                    if (randomPercentage() <= people[i-maxCols].infectionChance) {
+                        document.getElementById(x + "," + (y-1)).className = (cellSize + " infected");
+                        people[i-maxCols].infected = true;
                     }
                 }
-                if (y+1 <= 10 && people[i+10]) {
-                    if (randomPercentage() <= people[i+10].infectionChance) {
-                        document.getElementById(x + "," + (y+1)).className = "cells infected";
-                        people[i+10].infected = true;
+                if (y+1 <= maxCols && people[i+maxCols]) {
+                    if (randomPercentage() <= people[i+maxCols].infectionChance) {
+                        document.getElementById(x + "," + (y+1)).className = (cellSize + " infected");
+                        people[i+maxCols].infected = true;
                     }
                 }
             }
@@ -90,32 +90,61 @@ function tickLoop(){
     },document.getElementById("tickRate").value); // Tick rate
 }
 
-var people = [];
-var maxRows = 10;
-var maxCols = 10;
-var gridSize = maxRows*maxCols;
-var tickEnder = false;
+function grid () {
+    switch (document.getElementById("grid").value) {
+        case 'cells1':
+        maxCols = 10;
+        cellSize = "cells1";
+        break;
+        case 'cells2':
+        maxCols = 20;
+        cellSize = "cells2";
+        break;
+        case 'cells3':
+        maxCols = 50;
+        cellSize = "cells3";
+        break;
+        case 'cells4':
+        maxCols = 100;
+        cellSize = "cells4";
+        break;
+        case 'cells5':
+        maxCols = 250;
+        cellSize = "cells5";
+        break;
+    }
+    return maxCols;
+}
 
+// Global variables
+var people = [];
+var tickEnder = false;
+var cellSize = "";
+var gridSize;
+var maxCols = 0;
 // Called when the program begins:
 function app () {
+    // Ensuring these are reset.
+    people = [];
+    tickEnder = false;
+
     // Cleanse previous DIV's
     var game = document.getElementById("game");
-    for (i=0;i<100;i++) {
+    for (i=0;i<gridSize;i++) {
         if (game.firstElementChild) {
             game.removeChild(game.firstElementChild);
         }
     }
 
-    // Ensuring these are reset.
-    people = [];
-    tickEnder = false;
-
+    maxCols = grid();
+    gridSize = grid()*grid();
     // Setting Coordinates and creating objects.
-    for (column = 1; column < maxCols+1; column++) {
-        for (row = 1; row < maxRows+1; row++) {
+    // no longer working for some reason..
+    for (column = 1; column <= maxCols; column++) {
+        for (row = 1; row <= maxCols; row++) { // wont even activate.
             var newPerson = new Person(row, column, infectionChance(), false);
             var newDiv = document.getElementById("game").appendChild(document.createElement("DIV"));
-            newDiv.className = "cells healthy"; // Ensuring they look like cells.
+            newDiv.className = (cellSize + " healthy"); // Ensuring they look like cells.
             newDiv.id = row + "," + column;
             people.push(newPerson); //Add to array.
         }
@@ -124,7 +153,7 @@ function app () {
     // First Infection
     var firstInfected = Math.floor(Math.random()*(gridSize));
     people[firstInfected].infected = true;
-    document.getElementById(people[firstInfected].xCoord + "," + people[firstInfected].yCoord).className = "cells infected"; // Turning the first infected to Red, might be able to add this to the for loop below.
+    document.getElementById(people[firstInfected].xCoord + "," + people[firstInfected].yCoord).className = cellSize + " infected"; // Turning the first infected to Red, might be able to add this to the for loop below.
 
     tickLoop();
     return false;

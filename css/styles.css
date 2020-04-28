@@ -51,13 +51,42 @@ body {
 
 
 /* Game styles: */
-.cells {
+/* 10x10 */
+.cells1 {
     width: 48px;
     height: 48px;
     border: 1px solid;
     float: left;
 }
 
+/* 20x20 */
+.cells2 {
+    width: 24px;
+    height: 24px;
+    border: 0.5px solid;
+    float: left;
+}
+
+/* 50x50 */
+.cells3 {
+    width: 10px;
+    height: 10px;
+    float: left;
+}
+
+/* 100x100 */
+.cells4 {
+    width: 5px;
+    height: 5px;
+    float: left;
+}
+
+/* 250x250 */
+.cells5 {
+    width: 2px;
+    height: 2px;
+    float: left;
+}
 .infected {
     background-color: #c70039;
 }
